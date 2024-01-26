@@ -43,7 +43,7 @@ void lui_setTextColorBlend(lgi_Color color, float blend) {
 	lui_setTextColor(vec4_mix(blend,lui.textColor,color));
 }
 
-#define lui_inibox() (lui.box = lui.boxstack)
+#define lui_inibox() (lui.box = lui.boxStack)
 #define lui_dupbox() (lui__check_overflow(), lui.box[1] = lui.box[0], lui.box += 1)
 #define lui_popbox() (lui__check_underflow(), *(lui.box -= 1))
 #define lui_getbox() (*lui.box)
@@ -54,7 +54,7 @@ void lui_putbox(lui_Box xx) {
 	lui_setbox(xx);
 }
 /* TODO: this should clip too */
-#define lui_cutbox(side,size) lui_putbox(lui_boxcut(lui.box,FUSE(lui_,side),size))
+#define lui_cutbox(side,size) lui_putbox(lui_boxcut(lui.box,XFUSE(lui_,side),size))
 
 // WHEN COME BACK FIX THIS
 #define lui_hasline() ((lui_getbox().y1-lui_getbox().y0)>=TUI_LINE_HEIGHT)
@@ -112,7 +112,7 @@ lui_Box lui_boxcut(lui_Box *box, int mode, float size) {
 	return result;
 }
 
-#if 0
+#if 1
 lui_Box rect_center(lui_Box parent, lui_Box child) {
 	lui_Box result;
 	result.x0 = parent.x0 + ((parent.x1 - parent.x0) * .5) - ((child.x1 - child.x0) * .5);
