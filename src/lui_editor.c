@@ -26,20 +26,27 @@ enumcur(lui_Editor *editor) {
 	return arrlen(editor->cursor);
 }
 
-void
-lui__drawBox(lui_Box rect, lgi_Color color) {
-	lgi_drawQuad(color,rect.x0,rect.y0,(rect.x1-rect.x0),(rect.y1-rect.y0));
+void lui__drawBox(lui_Box b, lgi_Color color) {
+	lgi_drawQuad(color,b.x0,b.y0,(b.x1-b.x0),(b.y1-b.y0));
 }
 
-void
-lui__drawRoundBox(lui_Box box, lgi_Color color, float cornerRadius) {
+void lui__drawBoxOutine(lui_Box b, lgi_Color color, float thickness) {
+	/* top,bottom,left,right */
+	lgi_drawQuad(color,b.x0-thickness,b.y1-thickness*.5f,b.x1-b.x0+thickness*2,thickness);
+	lgi_drawQuad(color,b.x0-thickness,b.y0-thickness*.5f,b.x1-b.x0+thickness*2,thickness);
+
+	lgi_drawQuad(color,b.x0-thickness,b.y0,thickness,b.y1-b.y0);
+	lgi_drawQuad(color,b.x1,b.y0,thickness,b.y1-b.y0);
+}
+
+void lui__drawRoundBox(lui_Box b, lgi_Color color, float cornerRadius) {
 	lgi_drawBoxSDF(
 	/* */vec2_xy(
-	/* */box.x0 + (box.x1 - box.x0) * .5f,
-	/* */box.y0 + (box.y1 - box.y0) * .5f),
+	/* */b.x0 + (b.x1 - b.x0) * .5f,
+	/* */b.y0 + (b.y1 - b.y0) * .5f),
 	/* */vec2_xy(
-	/* */.5f*(box.x1-box.x0),
-	/* */.5f*(box.y1-box.y0)), color, cornerRadius, 1.);
+	/* */.5f*(b.x1-b.x0),
+	/* */.5f*(b.y1-b.y0)), color, cornerRadius, 1.);
 }
 
 int

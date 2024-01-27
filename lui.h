@@ -91,6 +91,27 @@ typedef signed int 			  __int32;
 #pragma warning(disable:4244)
 #pragma warning(disable:4189)
 
+enum { lui_left, lui_right, lui_top, lui_bottom };
+
+typedef struct lui_Box {
+	float x0,y0,x1,y1;
+} lui_Box;
+
+//
+// Rendering Functions, To Be Implemented By Backend!
+//
+void lui__drawText(lui_Box box, char const *string);
+void lui__drawRoundBox(lui_Box box, lgi_Color color, float cornerRadius);
+void lui__drawBox(lui_Box rect, lgi_Color color);
+
+
+#define lui_text(xx) lui__drawText(*lui.box,xx)
+#define lui_texf(ff,...) lui__drawText(*lui.box,elCS_tmpFormat(ff,__VA_ARGS__))
+
+//
+// Editor:
+//
+
 typedef enum {
 	E_MOD_NONE,
 	E_MOD_SHIFT_BIT = 1 << 0,
@@ -234,11 +255,6 @@ typedef struct lui_Draw_Config {
 	float char_height;
 } lui_Draw_Config;
 
-enum { lui_left, lui_right, lui_top, lui_bottom };
-
-typedef struct lui_Box {
-	float x0,y0,x1,y1;
-} lui_Box;
 
 typedef struct {
 	void *key;

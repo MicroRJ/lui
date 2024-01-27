@@ -22,7 +22,6 @@ struct {
 	lui_Box *box;
 } lgi_Global lui;
 
-
 void lui__check_overflow() {
 	lui.boxCount += 1;
 	lgi_ASSERT(lui.box<lui.boxStack+(sizeof(lui.boxStack)/sizeof(lui.boxStack[0])));
@@ -32,8 +31,6 @@ void lui__check_underflow() {
 	lgi_ASSERT(lui.box>lui.boxStack);
 }
 
-void lui__drawText(lui_Box box, char const *string);
-void lui__drawRoundBox(lui_Box box, lgi_Color color, float cornerRadius);
 
 void lui_setTextColor(lgi_Color color) {
 	lui.textColor = color;
@@ -48,13 +45,16 @@ void lui_setTextColorBlend(lgi_Color color, float blend) {
 #define lui_popbox() (lui__check_underflow(), *(lui.box -= 1))
 #define lui_getbox() (*lui.box)
 #define lui_setbox(xx) (lui_getbox() = (xx))
-/* this has to be a function, operand has to be evaluated first and only once */
-void lui_putbox(lui_Box xx) {
+
+/* This Has To Be A Function, Operand Has To Be Evaluated First And Only Once
+*/
+lui_Box lui_putbox(lui_Box xx) {
 	lui_dupbox();
 	lui_setbox(xx);
+	return xx;
 }
 /* TODO: this should clip too */
-#define lui_cutbox(side,size) lui_putbox(lui_boxcut(lui.box,XFUSE(lui_,side),size))
+#define lui_cutbox(side,size) lui_putbox(lui_boxcut(lui.box,side,size))
 
 // WHEN COME BACK FIX THIS
 #define lui_hasline() ((lui_getbox().y1-lui_getbox().y0)>=TUI_LINE_HEIGHT)
@@ -75,15 +75,15 @@ int lui_unclickbox(lui_Box box) {
 	return lgi_isButtonReleased(0) && lui_testinbox(box,lgi.Input.Mice.xcursor,lgi.Input.Mice.ycursor);
 }
 
-#define lui_text(xx) lui__drawText(*lui.box,xx)
-#define lui_texf(ff,...) lui__drawText(*lui.box,elCS_tmpFormat(ff,__VA_ARGS__))
-
-
 lui_Box lui_dobox(float x0, float y0, float x1, float y1) {
-	lui_Box rect;
-	rect.x0 = x0; rect.x1 = x1;
-	rect.y0 = y0; rect.y1 = y1;
-	return rect;
+	lui_Box b;
+	b.x0 = x0; b.x1 = x1;
+	b.y0 = y0; b.y1 = y1;
+	return b;
+}
+
+lui_Box lui_bbox(float x0, float y0, float dx, float dy) {
+	return lui_dobox(x0,y0,x0+dx,y0+dy);
 }
 
 lui_Box lui_boxcut(lui_Box *box, int mode, float size) {
