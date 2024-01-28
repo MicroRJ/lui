@@ -122,11 +122,8 @@ lui_Box rect_center(lui_Box parent, lui_Box child) {
 	return result;
 }
 
-lui_Box rect_padd(lui_Box rect, float xpadd, float ypadd) {
-	return lui_dobox(rect.x0 + (xpadd * .5)
-	, rect.y0 + (ypadd * .5)
-	, rect.x1 - (xpadd * .5)
-	, rect.y1 - (ypadd * .5));
+lui_Box lui_Box_enlarge(lui_Box b, float x, float y) {
+	return lui_dobox(b.x0 - (x * .5), b.y0 - (y * .5), b.x1 + (x * .5), b.y1 + (y * .5));
 }
 
 
