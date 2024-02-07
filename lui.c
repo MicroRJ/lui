@@ -58,7 +58,7 @@ lui_Box lui_putbox(lui_Box xx) {
 
 // WHEN COME BACK FIX THIS
 #define lui_hasline() ((lui_getbox().y1-lui_getbox().y0)>=TUI_LINE_HEIGHT)
-#define lui_newline() lui_cutbox(top,TUI_LINE_HEIGHT)
+#define lui_newline() lui_cutbox(lui_top,TUI_LINE_HEIGHT)
 #define lui_endline() lui_popbox()
 
 #define lui_newcol(side,size) lui_cutbox(side,size)

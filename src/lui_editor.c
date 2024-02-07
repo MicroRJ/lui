@@ -66,7 +66,9 @@ lui__draw_editor(lui_Editor *lpEditor, lui_Box bx) {
 
 	/* todo */
 	lgi_Color curcolor = E_CURSOR_COLOR(lpEditor);
-	curcolor.a = clamp(animation,.1,.8);
+	curcolor.a = animation;
+	if (animation < .1) animation = .1;
+	if (animation > .8) animation = .8;
 	float lineHeight = lpFont->line_height;
 	/* [[TODO]]: rename to "firstline" */
 	__int32 yview = lpEditor->lyview;
